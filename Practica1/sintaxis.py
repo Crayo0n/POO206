@@ -8,3 +8,6 @@ de varias lineas
 en python
 """
 
+#2.- Strings 
+print("Hola soy una cadena") 
+print('Yo soy otra')
