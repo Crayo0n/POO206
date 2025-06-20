@@ -1,5 +1,5 @@
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template, request, url_for, flash, redirect
 from flask_mysqldb import MySQL
 import MySQLdb
 
@@ -9,6 +9,7 @@ app.config['MYSQL_HOST']="localhost"
 app.config['MYSQL_USER']="root"
 app.config['MYSQL_PASSWORD']="U41578780o"
 app.config['MYSQL_DB']="dbflask"
+app.secret_key='mysecretkey'
 
 mysql= MySQL(app)
 #ruta para probar la conexion a la BD
@@ -22,33 +23,51 @@ def DB_check():
         return jsonify({'status':'error','message': str(e)}), 500
         
 
-
-#ruta simple
+#ruta de inicio
 @app.route('/')
 def home(): 
-    return 'Hola mundo FLASK'
+    return render_template('formulario.html')
 
-#ruta con parametros
-@app.route('/saludo/<nombre>')
-def saludar(nombre):
-    return 'Hola ,'+nombre+'!!!' 
+#ruta de consulta
+@app.route('/consulta')
+def consulta(): 
+    return render_template('consulta.html')
 
 #ruta Try-Catch
 @app.errorhandler(404)
 def paginaNoE(e):
     return 'Cuidado: Error de capa 8 !!!', 404
 
+#ruta Try-Catch
+@app.errorhandler(405)
+def errorPost(e):
+    return 'Cuidado: Revisa el metodo utilizado !!!', 405
 
-#ruta doble
-@app.route('/usuario')
-@app.route('/usuaria')
-def dobleroute():
-    return 'Soy el mismo recurso del servidor'
+#ruta para el insert
+@app.route('/guardarAlbum', methods=['POST'])
+def guardar(): 
+    #Obtener los datos a insestrar
+    titulo= request.form.get('txtTitulo','').strip()
+    artista= request.form.get('txtArtista','').strip()
+    anio= request.form.get('txtAnio','').strip()
 
-#ruta POST
-@app.route('/formulario', methods=['POST'])
-def formulario():
-    return 'Soy un formulario'
+    #Intentamos Ejecutar el Insert
+    try:
+        cursor=mysql.connection.cursor()
+        cursor.execute('insert into Albums (Titulo, Artista, Año) values (%s,%s,%s)',(titulo,artista,anio))
+        mysql.connection.commit()
+        flash('Album se guardo en la BD')
+        return redirect(url_for('home'))
+        
+    except Exception as e:
+        mysql.connection.rollback()
+        flash('Error: '+ str(e))
+        return redirect(url_for('home'))
+    
+    finally:    
+        cursor.close()
+        
+    
 
 if __name__ == '__main__':
     app.run(port=3000, debug=True)
