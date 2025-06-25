@@ -13,6 +13,8 @@
     <br>
     <br>
 
+    <!--Mensaje controlado por jinja-->
+    <!--Inicio de bloque-->
         {% with mensajes=get_flashed_messages()%}
             {% if mensajes %}
                 {%for msj in mensajes%}
@@ -21,12 +23,37 @@
             {%endif%}
         {% endwith %}
 
-    <form action="/guardarAlbum" method="post">
-        <input type="text" name="txtTitulo" placeholder="Titulo">
-        <input type="text" name="txtArtista" placeholder="Artista">
-        <input type="number" name="txtAnio" placeholder="Año de publicación">
-        <button type="submit">Guardar Album</button>
+    <form action="{{ url_for('guardar') }}" method="POST">
+        <input type = "text" name = "txtTitulo" placeholder="Titulo" value = "{{ request.form.txtTitulo }}">
+        {% if errores and errores.txtTitulo %}
+            <p style="color:red">{{errores.txtTitulo}}</p>
+        {% endif %}
+        <input type = "text" name = "txtArtista" placeholder="Artista" value = "{{ request.form.txtArtista }}">
+        {% if errores and errores.txtArtista %}
+            <p style="color:red">{{errores.txtArtista}}</p>
+        {% endif %}
+        <input type = "number" name = "txtAno" placeholder="Año de publicación" value = "{{ request.form.txtAno }}">
+       {% if errores and errores.txtAno %}
+            <p style="color:red">{{errores.txtAno}}</p>
+        {% endif %}
+        <button type="submit">Guardar Album</button> <!--submit pq es para post-->
 
     </form>
+
+    <br>
+    <table>
+        <thead>
+            <td>ID</td>
+            <td>Album</td>
+        </thead>
+        <tbody>
+            {%for alb in albums%}
+            <tr>
+                <td>{{alb.0}}</td>
+                <td><a href="/detalles/{{alb.0}}">{{alb.1}}</a></td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
 </body>
 </html>

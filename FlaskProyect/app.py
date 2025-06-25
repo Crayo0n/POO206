@@ -26,8 +26,19 @@ def DB_check():
 #ruta de inicio
 @app.route('/')
 def home(): 
-    return render_template('formulario.html')
+    try:
+        cursor=mysql.connection.cursor()
+        cursor.execute('select * from Albums')
+        consultaTodo=cursor.fetchall()
+        return render_template('formulario.html',errores={},albums=consultaTodo)
 
+    except Exception as e:
+        print('Error en la consulta: '+e)
+        return render_template('formulario.html',errores={},albums=[])
+
+    finally:
+        cursor.close()
+        
 #ruta de consulta
 @app.route('/consulta')
 def consulta(): 
@@ -46,27 +57,40 @@ def errorPost(e):
 #ruta para el insert
 @app.route('/guardarAlbum', methods=['POST'])
 def guardar(): 
+    errores={}
     #Obtener los datos a insestrar
     titulo= request.form.get('txtTitulo','').strip()
     artista= request.form.get('txtArtista','').strip()
     anio= request.form.get('txtAnio','').strip()
 
-    #Intentamos Ejecutar el Insert
-    try:
-        cursor=mysql.connection.cursor()
-        cursor.execute('insert into Albums (Titulo, Artista, Año) values (%s,%s,%s)',(titulo,artista,anio))
-        mysql.connection.commit()
-        flash('Album se guardo en la BD')
-        return redirect(url_for('home'))
+
+    if not titulo:
+        errores['txtTitulo'] = 'Nombre del album obligatorio'
+    if not artista:
+        errores['txtArtista'] = 'Nombre del artista obligatorio'
+    if not anio:
+        errores['txtAno'] = 'Año del album obligatorio'
+    elif not anio.isdigit() or int(anio) < 1800 or int(anio) > 2030:
+        errores['txtAno'] = 'En año solo ingresar un año valido'
         
-    except Exception as e:
-        mysql.connection.rollback()
-        flash('Error: '+ str(e))
-        return redirect(url_for('home'))
+    if not errores:
+        #Intentamos Ejecutar el Insert
+        try:
+            cursor=mysql.connection.cursor()
+            cursor.execute('insert into Albums (Titulo, Artista, Año) values (%s,%s,%s)',(titulo,artista,anio))
+            mysql.connection.commit()
+            flash('Album se guardo en la BD')
+            return redirect(url_for('home'))
+        
+        except Exception as e:
+            mysql.connection.rollback()
+            flash('Error: '+ str(e))
+            return redirect(url_for('home'))
     
-    finally:    
-        cursor.close()
-        
+        finally:    
+            cursor.close()
+    
+    return render_template('formulario.html', errores = errores)
     
 
 if __name__ == '__main__':
