@@ -38,7 +38,23 @@ def home():
 
     finally:
         cursor.close()
-        
+
+
+@app.route('/detalles/<int:id>')
+def detalle(id):
+    try:
+        cursor=mysql.connection.cursor()
+        cursor.execute('select * from Albums where id= %s',((id),))
+        consultaID=cursor.fetchone()
+        return render_template ('consulta.html', errores={},album=consultaID)
+    
+    except Exception as e:
+        print('Error al consultar por ID '+e)
+        return redirect (url_for('home'))
+    
+    finally:
+        cursor.close()
+
 #ruta de consulta
 @app.route('/consulta')
 def consulta(): 
