@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" >
+
+    <title>Actualizar Album</title>
+</head>
+<body>
+    <h2>Actualizar Album</h2>
+    <br>
+    <br>
+    <br>
+
+    <form action="{{ url_for('actualizar', id=album[0]) }}" method="POST">
+    <input type="text" name="txtTituloA" placeholder="Titulo" value="{{ album[1] if album else '' }}">
+    {% if errores and errores.txtTituloA %}
+        <p style="color:red">{{ errores.txtTituloA }}</p>
+    {% endif %}
+
+    <input type="text" name="txtArtistaA" placeholder="Artista" value="{{ album[2] if album else '' }}">
+    {% if errores and errores.txtArtistaA %}
+        <p style="color:red">{{ errores.txtArtistaA }}</p>
+    {% endif %}
+
+    <input type="number" name="txtAnioA" placeholder="Año de publicación" value="{{ album[3] if album else '' }}">
+    {% if errores and errores.txtAnioA %}
+        <p style="color:red">{{ errores.txtAnioA }}</p>
+    {% endif %}
+
+    <button type="submit">Actualizar Album</button>
+</form>
+    <br>
+</body>
+</html>

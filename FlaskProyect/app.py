@@ -85,9 +85,9 @@ def guardar():
     if not artista:
         errores['txtArtista'] = 'Nombre del artista obligatorio'
     if not anio:
-        errores['txtAno'] = 'Año del album obligatorio'
+        errores['txtAnio'] = 'Año del album obligatorio'
     elif not anio.isdigit() or int(anio) < 1800 or int(anio) > 2030:
-        errores['txtAno'] = 'En año solo ingresar un año valido'
+        errores['txtAnio'] = 'En año solo ingresar un año valido'
         
     if not errores:
         #Intentamos Ejecutar el Insert
@@ -107,7 +107,45 @@ def guardar():
             cursor.close()
     
     return render_template('formulario.html', errores = errores)
-    
+
+
+# ruta para actualizar
+@app.route('/actualizar/<int:id>', methods=['POST'])
+def actualizar(id):
+    errores = {}
+    tituloA = request.form.get('txtTituloA', '').strip()
+    artistaA = request.form.get('txtArtistaA', '').strip()
+    anioA = request.form.get('txtAnioA', '').strip()
+
+    if not tituloA:
+        errores['txtTituloA'] = 'Nombre del album obligatorio'
+    if not artistaA:
+        errores['txtArtistaA'] = 'Nombre del artista obligatorio'
+    if not anioA:
+        errores['txtAnioA'] = 'Año del album obligatorio'
+    elif not anioA.isdigit() or int(anioA) < 1800 or int(anioA) > 2030:
+        errores['txtAnioA'] = 'En año solo ingresar un año valido'
+
+    if not errores:
+        try:
+            cursor = mysql.connection.cursor()
+            cursor.execute('update Albums set Titulo=%s, Artista=%s, Año=%s where id=%s',(tituloA, artistaA, anioA, id))
+            mysql.connection.commit()
+            flash('Album se actualizó correctamente')
+            return redirect(url_for('home'))
+        
+        except Exception as e:
+            mysql.connection.rollback()
+            flash('Error: ' + str(e))
+            return redirect(url_for('home'))
+        
+        finally:
+            cursor.close()
+            
+    else:
+        album = (id, tituloA, artistaA, anioA)
+        return render_template('formUpdate.html', errores=errores, album=album)
+
 
 if __name__ == '__main__':
     app.run(port=3000, debug=True)

@@ -28,15 +28,18 @@
         {% if errores and errores.txtTitulo %}
             <p style="color:red">{{errores.txtTitulo}}</p>
         {% endif %}
+
         <input type = "text" name = "txtArtista" placeholder="Artista" value = "{{ request.form.txtArtista }}">
         {% if errores and errores.txtArtista %}
             <p style="color:red">{{errores.txtArtista}}</p>
         {% endif %}
-        <input type = "number" name = "txtAno" placeholder="Año de publicación" value = "{{ request.form.txtAno }}">
-       {% if errores and errores.txtAno %}
-            <p style="color:red">{{errores.txtAno}}</p>
+
+        <input type = "number" name = "txtAnio" placeholder="Año de publicación" value = "{{ request.form.txtAnio }}">
+       {% if errores and errores.txtAnio %}
+            <p style="color:red">{{errores.txtAnio}}</p>
         {% endif %}
-        <button type="submit">Guardar Album</button> <!--submit pq es para post-->
+
+        <button type="submit">Guardar Album</button> 
 
     </form>
 
