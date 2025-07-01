@@ -108,6 +108,23 @@ def guardar():
     
     return render_template('formulario.html', errores = errores)
 
+@app.route('/actualizar/<int:id>', methods=['GET'])
+def mostrar_actualizar(id):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('select * from Albums where id = %s', (id,))
+        album = cursor.fetchone()  # Obtener los datos del álbum
+        if album:
+            return render_template('formUpdate.html', album=album, errores={})
+        else:
+            flash('Álbum no encontrado')
+            return redirect(url_for('home'))
+    except Exception as e:
+        flash(f'Error al cargar los datos del álbum: {e}')
+        return redirect(url_for('home'))
+    finally:
+        cursor.close()
+
 
 # ruta para actualizar
 @app.route('/actualizar/<int:id>', methods=['POST'])
