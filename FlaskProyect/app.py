@@ -28,7 +28,7 @@ def DB_check():
 def home(): 
     try:
         cursor=mysql.connection.cursor()
-        cursor.execute('select * from Albums')
+        cursor.execute('select * from Albums where estatus = 1')
         consultaTodo=cursor.fetchall()
         return render_template('formulario.html',errores={},albums=consultaTodo)
 
@@ -164,5 +164,34 @@ def actualizar(id):
         return render_template('formUpdate.html', errores=errores, album=album)
 
 
+#Ruta de eliminación
+@app.route('/eliminar/<int:id>')
+def mostrar_eliminar(id):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('select * from Albums where id = %s', (id,))
+        album = cursor.fetchone()
+        if album:
+            return render_template('confirmDel.html', album=album)
+    except Exception as e:
+        flash('Error al cargar el álbum: '+ str(e))
+        return redirect(url_for('home'))
+    finally:
+        cursor.close()
+        
+@app.route('/eliminar/<int:id>', methods=['POST'])
+def confirmarEliminar(id):
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('update Albums set estatus = 0 where id = %s', (id,))
+        mysql.connection.commit()
+        flash('Álbum eliminado en Base de datos')
+    except Exception as e:
+        mysql.connection.rollback()
+        flash('Algo falló: ' + str(e))
+    finally:
+        cursor.close()
+    return redirect(url_for('home'))
+   
 if __name__ == '__main__':
     app.run(port=3000, debug=True)
