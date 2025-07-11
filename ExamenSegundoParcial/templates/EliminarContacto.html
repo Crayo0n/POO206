@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Eliminar Contacto</title>
+</head>
+
+<body>
+    <h2>Eliminar Contacto</h2>
+    <br>
+    <br>
+    <br>
+
+    <h2 style="color: red;">¿Seguro que quieres eliminar</h2>
+
+    <form action="{{ url_for('mostrar_eliminar', id=contacto[0]) }}" method="POST">
+
+        <input type="text" value="{{ contacto[1]}}" disabled>
+
+        <input type="text" value="{{ contacto[2] }}" disabled>
+
+
+        <input type="number" value="{{ contacto[3] }}" disabled>
+
+        <button type="submit">Confirmar Eliminación</button>
+    </form>
+
+    <a href="{{ url_for('home')}}">Regresar al Inicio</a>
+    <br>
+</body>
+
+</html>

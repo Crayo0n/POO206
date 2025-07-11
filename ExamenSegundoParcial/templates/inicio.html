@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" >
+
+    <title>Contactos</title>
+</head>
+<body>
+    <h2>Contactos</h2>
+    <br>
+    <br>
+    <br>
+
+    <!--Mensaje controlado por jinja-->
+    <!--Inicio de bloque-->
+        {% with mensajes=get_flashed_messages()%}
+            {% if mensajes %}
+                {%for msj in mensajes%}
+                    <h4>{{msj}}</h4>
+                {% endfor %}
+            {%endif%}
+        {% endwith %}
+
+    <form action="{{ url_for('guardar') }}" method="POST">
+        <input type = "text" name = "txtNombre" placeholder="Nombre" value = "{{ request.form.txtNombre }}">
+        {% if errores and errores.txtNombre %}
+            <p style="color:red">{{errores.txtNombre}}</p>
+        {% endif %}
+
+        <input type = "email" name = "txtCorreo" placeholder="Correo" value = "{{ request.form.txtCorreo }}">
+        {% if errores and errores.txtCorreo %}
+            <p style="color:red">{{errores.txtCorreo}}</p>
+        {% endif %}
+
+        <input type = "number" name = "txtTelefono" placeholder="Teléfono" value = "{{ request.form.txtTelefono }}">
+       {% if errores and errores.txtTelefono %}
+            <p style="color:red">{{errores.txtTelefono}}</p>
+        {% endif %}
+
+        <input type = "number" name = "txtEdad" placeholder="Edad" value = "{{ request.form.txtEdad }}">
+       {% if errores and errores.txtEdad %}
+            <p style="color:red">{{errores.txtEdad}}</p>
+        {% endif %}
+
+        <button type="submit">Guardar Contacto</button> 
+
+    </form>
+
+    <br>
+    <table>
+        <thead>
+            <td>ID</td>
+            <td>Nombre</td>
+        </thead>
+        <tbody>
+            {%for cont in contactos%}
+            <tr>
+                <td>{{cont.0}}</td>
+                <td><a href="/detalles/{{cont.0}}">{{cont.1}}</a></td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</body>
+</html>

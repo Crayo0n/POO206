@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Actualizar Contacto</title>
+</head>
+
+<body>
+    <h2>Actualizar Contacto </h2>
+    <br>
+    <br>
+    <br>
+
+    <form action="{{ url_for('actualizar', id=contacto[0]) }}" method="POST">
+
+        <input type="text" name="txtNombreA" placeholder="Nombre" value="{{ contacto[1] if contacto else '' }}">
+        {% if errores and errores.txtNombreA %}
+        <p style="color:red">{{ errores.txtNombreA }}</p>
+        {% endif %}
+
+        <input type="email" name="txtCorreoA" placeholder="Correo" value="{{ contacto[2] if contacto else '' }}">
+        {% if errores and errores.txtCorreoA %}
+        <p style="color:red">{{ errores.txtCorreoA }}</p>
+        {% endif %}
+
+        <input type="number" name="txtTelefonoA" placeholder="Telefono" value="{{ contacto[3] if contacto else '' }}">
+        {% if errores and errores.txtTelefonoA %}
+        <p style="color:red">{{ errores.txtTelefonoA }}</p>
+        {% endif %}
+
+        <input type="number" name="txtEdadA" placeholder="Edad" value="{{ contacto[4] if contacto else '' }}">
+        {% if errores and errores.txtEdadA %}
+        <p style="color:red">{{ errores.txtEdadA }}</p>
+        {% endif %}
+
+        <button type="submit">Actualizar Contacto</button>
+    </form>
+    <br>
+</body>
+
+</html>

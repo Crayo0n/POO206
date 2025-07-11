@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalle del Contacto</title>
+</head>
+<body>
+    <h2>Detalles del Contacto</h2>
+    <table>
+        <thead>
+            <td>ID:</td>
+            <td>Nombre:</td>
+            <td>Correo:</td>
+            <td>Teléfono</td>
+            <td>Edad:</td>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>{{contacto.0}}</td>
+                <td>{{contacto.1}}</td>
+                <td>{{contacto.2}}</td>
+                <td>{{contacto.3}}</td>
+                <td>{{contacto.4}}</td>
+                <td><a href="/actualizar/{{contacto.0}}">Actualizar</a></td>
+                <td><a href="/eliminar/{{contacto.0}}">Eliminar</a></td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <a href="/">Abrir vista Inicio</a>
+</body>
+</html>
