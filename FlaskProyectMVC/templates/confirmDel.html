@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Eliminar Album</title>
+</head>
+
+<body>
+    <h2>Eliminar Album</h2>
+    <br>
+    <br>
+    <br>
+
+    <h2 style="color: red;">¿Seguro que quieres eliminar</h2>
+
+    <form action="{{ url_for('albums.mostrar_eliminar', id=album[0]) }}" method="POST">
+
+        <input type="text" value="{{ album[1]}}" disabled>
+
+        <input type="text" value="{{ album[2] }}" disabled>
+
+
+        <input type="number" value="{{ album[3] }}" disabled>
+
+        <button type="submit">Confirmar Eliminación</button>
+    </form>
+
+    <a href="{{ url_for('albums.home')}}">Regresar al formulario</a>
+    <br>
+</body>
+
+</html>

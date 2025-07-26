@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalle de Album</title>
+</head>
+<body>
+    <h2>Vista de Consulta</h2>
+    <table>
+        <thead>
+            <td>ID:</td>
+            <td>Album:</td>
+            <td>Artista</td>
+            <td>Año:</td>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>{{album.0}}</td>
+                <td>{{album.1}}</td>
+                <td>{{album.2}}</td>
+                <td>{{album.3}}</td>
+                <td><a href="/actualizar/{{album.0}}">Actualizar</a></td>
+                <td><a href="/eliminar/{{album.0}}">Eliminar</a></td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <a href="/">Abrir vista Formulario</a>
+</body>
+</html>
