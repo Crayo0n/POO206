@@ -1,35 +1,36 @@
-<!DOCTYPE html>
-<html>
+{% extends "plantilla.html" %}
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-danger shadow">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">Eliminar Álbum</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="text-danger">¿Estás seguro que deseas eliminar este álbum?</h5>
 
-    <title>Eliminar Album</title>
-</head>
+                <form action="{{ url_for('albums.mostrar_eliminar', id=album[0]) }}" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Título</label>
+                        <input type="text" class="form-control" value="{{ album[1] }}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Artista</label>
+                        <input type="text" class="form-control" value="{{ album[2] }}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Año</label>
+                        <input type="number" class="form-control" value="{{ album[3] }}" disabled>
+                    </div>
 
-<body>
-    <h2>Eliminar Album</h2>
-    <br>
-    <br>
-    <br>
-
-    <h2 style="color: red;">¿Seguro que quieres eliminar</h2>
-
-    <form action="{{ url_for('albums.mostrar_eliminar', id=album[0]) }}" method="POST">
-
-        <input type="text" value="{{ album[1]}}" disabled>
-
-        <input type="text" value="{{ album[2] }}" disabled>
-
-
-        <input type="number" value="{{ album[3] }}" disabled>
-
-        <button type="submit">Confirmar Eliminación</button>
-    </form>
-
-    <a href="{{ url_for('albums.home')}}">Regresar al formulario</a>
-    <br>
-</body>
-
-</html>
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('albums.home') }}" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
